@@ -17,7 +17,7 @@ def login():
 
         flash('Invalid username or Password')
 
-    title = "watchlist login"
+    title = "PITCH HUB"
     return render_template('auth/login.html',login_form = login_form,title=title)
 
 @auth.route('/logout')
@@ -34,7 +34,7 @@ def register():
         user = User(email = form.email.data, username = form.username.data,password = form.password.data)
         user.save_user()
 
-        mail_message("Welcome to watchlist","email/welcome_user",user.email,user=user)
+        mail_message("Welcome to Pitch Hub","email/welcome_user",user.email,user=user)
         return redirect(url_for('auth.login'))
-        title = "New Account"
+        title = "PITCH HUB"
     return render_template('auth/register.html',registration_form = form)
