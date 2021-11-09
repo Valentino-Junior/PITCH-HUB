@@ -1,0 +1,4 @@
+Hello {{user.username}}
+Pitch Hub is pleased to welcome you.
+You've completed the application's registration process and can now begin sharing your pitches with the rest of the world.
+Best wishes.
