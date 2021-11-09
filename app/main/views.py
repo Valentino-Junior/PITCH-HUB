@@ -1,137 +1,39 @@
-from flask import render_template, request, redirect, url_for, abort, flash
+from flask import render_template,request,redirect,url_for,abort
 from . import main
-from flask_login import login_required, current_user
-from ..models import Pitch, User, Comment, Upvote, Downvote
-from .forms import PitchForm, CommentForm, UpvoteForm, UpdateProfile
-from flask.views import View, MethodView
-from .. import db, photos
-import markdown2
-
+from ..models import User,Pitch,Comment
+from .. import db,photos
+from .forms import UpdateProfile,PitchForm,CommentForm
+from flask_login import login_required,current_user
+import datetime
 
 # Views
-@main.route('/', methods=['GET', 'POST'])
+@main.route('/')
 def index():
+
     '''
     View root page function that returns the index page and its data
     '''
-    pitch = Pitch.query.filter_by().first()
-    title = 'Home'
-    businesspitch= Pitch.query.filter_by(category="businesspitch")
-    interviewpitch = Pitch.query.filter_by(category="interviewpitch")
-    techpitch = Pitch.query.filter_by(category="techpitch")
-    pickuppitch = Pitch.query.filter_by(category="pickuppitch")
 
-    upvotes = Upvote.get_all_upvotes(pitch_id=Pitch.id)
+    title = 'Home - Welcome to Perfect Pitch'
 
-    return render_template('index.html', title=title, pitch=pitch, pickuppitch=pickuppitch,
-                           interviewpitch=interviewpitch, businesspitch=businesspitch, techpitch=techpitch,
-                           upvotes=upvotes)
+    # Getting reviews by category
+    interview_piches = Pitch.get_pitches('interview')
+    product_piches = Pitch.get_pitches('product')
+    promotion_pitches = Pitch.get_pitches('promotion')
 
 
-
-@main.route('/pickup', methods=['GET', 'POST'])
-def pickup():
-    pitch = Pitch.query.filter_by().first()
-    pickuppitch = Pitch.query.filter_by(category="pickuppitch")
-    return render_template('pick-up.html', pitch=pitch, pickuppitch=pickuppitch)
-
-@main.route('/business', methods=['GET', 'POST'])
-def business():
-    pitch = Pitch.query.filter_by().first()
-    businesspitch= Pitch.query.filter_by(category="businesspitch")
-
-    return render_template('business.html', businesspitch=businesspitch, pitch=pitch)
-
-@main.route('/interview', methods=['GET', 'POST'])
-def interview():
-    pitch = Pitch.query.filter_by().first()
-    interviewpitch = Pitch.query.filter_by(category="interviewpitch")
-
-    return render_template('interview.html', pitch=pitch, interviewpitch=interviewpitch)
-
-@main.route('/technology', methods=['GET', 'POST'])
-def technology():
-    techpitch = Pitch.query.filter_by(category="techpitch")
-    pitch = Pitch.query.filter_by().first()
-    return render_template('technology.html', pitch=pitch, techpitch=techpitch)
-
-@main.route('/pitches/new/', methods=['GET', 'POST'])
-@login_required
-def new_pitch():
-    form = PitchForm()
-    my_upvotes = Upvote.query.filter_by(pitch_id=Pitch.id)
-    if form.validate_on_submit():
-        description = form.description.data
-        title = form.title.data
-        owner_id = current_user
-        category = form.category.data
-        print(current_user._get_current_object().id)
-        new_pitch = Pitch(owner_id=current_user._get_current_object().id, title=title, description=description,
-                          category=category)
-        db.session.add(new_pitch)
-        db.session.commit()
-
-        return redirect(url_for('main.index'))
-    return render_template('pitches.html', form=form)
-
-
-@main.route('/comment/new/<int:pitch_id>', methods=['GET', 'POST'])
-@login_required
-def new_comment(pitch_id):
-    form = CommentForm()
-    pitch = Pitch.query.get(pitch_id)
-    if form.validate_on_submit():
-        description = form.description.data
-
-        new_comment = Comment(description=description, user_id=current_user._get_current_object().id, pitch_id=pitch_id)
-        db.session.add(new_comment)
-        db.session.commit()
-
-        return redirect(url_for('.new_comment', pitch_id=pitch_id))
-
-    all_comments = Comment.query.filter_by(pitch_id=pitch_id).all()
-    return render_template('comments.html', form=form, comment=all_comments, pitch=pitch)
-
-
-@main.route('/pitch/upvote/<int:pitch_id>/upvote', methods=['GET', 'POST'])
-@login_required
-def upvote(pitch_id):
-    pitch = Pitch.query.get(pitch_id)
-    user = current_user
-    pitch_upvotes = Upvote.query.filter_by(pitch_id=pitch_id)
-
-    if Upvote.query.filter(Upvote.user_id == user.id, Upvote.pitch_id == pitch_id).first():
-        return redirect(url_for('main.index'))
-
-    new_upvote = Upvote(pitch_id=pitch_id, user=current_user)
-    new_upvote.save_upvotes()
-    return redirect(url_for('main.index'))
-
-
-@main.route('/pitch/downvote/<int:pitch_id>/downvote', methods=['GET', 'POST'])
-@login_required
-def downvote(pitch_id):
-    pitch = Pitch.query.get(pitch_id)
-    user = current_user
-    pitch_downvotes = Downvote.query.filter_by(pitch_id=pitch_id)
-
-    if Downvote.query.filter(Downvote.user_id == user.id, Downvote.pitch_id == pitch_id).first():
-        return redirect(url_for('main.index'))
-
-    new_downvote = Downvote(pitch_id=pitch_id, user=current_user)
-    new_downvote.save_downvotes()
-    return redirect(url_for('main.index'))
-
-
+    return render_template('index.html',title = title, interview = interview_piches, product = product_piches, promotion = promotion_pitches)
 
 @main.route('/user/<uname>')
 def profile(uname):
     user = User.query.filter_by(username = uname).first()
+    pitches_count = Pitch.count_pitches(uname)
+    user_joined = user.date_joined.strftime('%b %d, %Y')
 
     if user is None:
         abort(404)
 
-    return render_template("profile/profile.html", user = user)
+    return render_template("profile/profile.html", user = user,pitches = pitches_count,date = user_joined)
 
 @main.route('/user/<uname>/update',methods = ['GET','POST'])
 @login_required
@@ -150,7 +52,7 @@ def update_profile(uname):
 
         return redirect(url_for('.profile',uname=user.username))
 
-    return render_template('profile/update.html',form =form)
+    return render_template('profile/update.html',form = form)
 
 @main.route('/user/<uname>/update/pic',methods= ['POST'])
 @login_required
@@ -161,3 +63,87 @@ def update_pic(uname):
         path = f'photos/{filename}'
         user.profile_pic_path = path
         db.session.commit()
+    return redirect(url_for('main.profile',uname=uname))
+
+@main.route('/pitch/new', methods = ['GET','POST'])
+@login_required
+def new_pitch():
+    pitch_form = PitchForm()
+    if pitch_form.validate_on_submit():
+        title = pitch_form.title.data
+        pitch = pitch_form.text.data
+        category = pitch_form.category.data
+
+        # Updated pitch instance
+        new_pitch = Pitch(pitch_title=title,pitch_content=pitch,category=category,user=current_user,likes=0,dislikes=0)
+
+        # Save pitch method
+        new_pitch.save_pitch()
+        return redirect(url_for('.index'))
+
+    title = 'New pitch'
+    return render_template('new_pitch.html',title = title,pitch_form=pitch_form )
+
+@main.route('/pitches/interview_pitches')
+def interview_pitches():
+
+    pitches = Pitch.get_pitches('interview')
+
+    return render_template("interview_pitches.html", pitches = pitches)
+
+@main.route('/pitches/product_pitches')
+def product_pitches():
+
+    pitches = Pitch.get_pitches('product')
+
+    return render_template("product_pitches.html", pitches = pitches)
+
+@main.route('/pitches/promotion_pitches')
+def promotion_pitches():
+
+    pitches = Pitch.get_pitches('promotion')
+
+    return render_template("promotion_pitches.html", pitches = pitches)
+
+@main.route('/pitch/<int:id>', methods = ['GET','POST'])
+def pitch(id):
+    pitch = Pitch.get_pitch(id)
+    posted_date = pitch.posted.strftime('%b %d, %Y')
+
+    if request.args.get("like"):
+        pitch.likes = pitch.likes + 1
+
+        db.session.add(pitch)
+        db.session.commit()
+
+        return redirect("/pitch/{pitch_id}".format(pitch_id=pitch.id))
+
+    elif request.args.get("dislike"):
+        pitch.dislikes = pitch.dislikes + 1
+
+        db.session.add(pitch)
+        db.session.commit()
+
+        return redirect("/pitch/{pitch_id}".format(pitch_id=pitch.id))
+
+    comment_form = CommentForm()
+    if comment_form.validate_on_submit():
+        comment = comment_form.text.data
+
+        new_comment = Comment(comment = comment,user = current_user,pitch_id = pitch)
+
+        new_comment.save_comment()
+
+
+    comments = Comment.get_comments(pitch)
+
+    return render_template("pitch.html", pitch = pitch, comment_form = comment_form, comments = comments, date = posted_date)
+
+@main.route('/user/<uname>/pitches')
+def user_pitches(uname):
+    user = User.query.filter_by(username=uname).first()
+    pitches = Pitch.query.filter_by(user_id = user.id).all()
+    pitches_count = Pitch.count_pitches(uname)
+    user_joined = user.date_joined.strftime('%b %d, %Y')
+
+    return render_template("profile/pitches.html", user=user,pitches=pitches,pitches_count=pitches_count,date = user_joined)
