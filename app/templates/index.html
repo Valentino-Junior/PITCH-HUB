@@ -8,34 +8,32 @@
 {%endblock%}
 <!-- Content block -->
 {%block content%}
-<div class="jumbotron text-center" style="background-color: #E63462; color: #fff; padding: 55px 25px; font-family: 'Monoton', cursive;">
-    <h1>Pitch Hub</h1>
-</div>
-<div class="container" style="padding-bottom: 20px;">
-    <a href="{{url_for('main.new_pitch')}}" class="btn btn-success">Create pitch</a>
+
+<div class="container" style="padding-top: 60px; text-align: center; padding-bottom: 60px;">
+    <a href="{{url_for('main.new_pitch')}}" class="btn btn-warning txt-center">Create Pitch</a>
 </div>
 
-<div class="container" style= "font-family: 'Cormorant Upright', serif;">
+<div class="container" style="text-align: center;">
     <div class="row">
         <div class="col-md-4">
             <div class="well well-lg">
-                <h3>Interview Pitches</h3>
-                <p>Want to ace an interview in just a few words, welcome.</p>
-                <a href="{{url_for('main.interview_pitches')}}" class="btn btn-primary -center">View</a>
+                <h3><b>BUSINESS PITCHES</b></h3>
+                <p>The goal of a business pitch is generally to secure the resources and funding necessary to move forward with a business plan or to continue with an already established business or venture.</p>
+                <a href="{{url_for('main.interview_pitches')}}" class="btn btn-success">View</a>
             </div>
         </div>
         <div class="col-md-4">
             <div class="well well-lg">
-                <h3>Product Pitches</h3>
-                <p>Want to talk about your products, you're in the right place.</p>
-                <a href="{{url_for('main.product_pitches')}}" class="btn btn-primary -center">View</a>
+                <h3><b>TECHNOLOGY PITCHES</b></h3>
+                <p>Tech Domains believes in the power of innovative ideas to build the future. </p>
+                <a href="{{url_for('main.product_pitches')}}" class="btn btn-success">View</a>
             </div>
         </div>
         <div class="col-md-4">
             <div class="well well-lg">
-                <h3>Promotion Pitches</h3>
-                <p>Want to promote anything, step right up and begin.</p>
-                <a href="{{url_for('main.promotion_pitches')}}" class="btn btn-primary -center">View</a>
+                <h3><b>INSPIRATIONAL PITCHES</b></h3>
+                <p>Motivational pitch is a good method to animate your clients or citizens to act in preferred direction – by starting to use some new technology or product or to change behavior</p>
+                <a href="{{url_for('main.promotion_pitches')}}" class="btn btn-success">View</a>
             </div>
         </div>
     </div>
