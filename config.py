@@ -4,7 +4,7 @@ class Config:
     '''
     General configuration parent class
     '''
-    SECRET_KEY = os.environ.get('SECRET_KEY')
+    SECRET_KEY = os.environ.get('keton')
     SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://vale:1234@localhost/pitchhub'
     UPLOADED_PHOTOS_DEST ='app/static'
     SQLALCHEMY_TRACK_MODIFICATIONS = True
