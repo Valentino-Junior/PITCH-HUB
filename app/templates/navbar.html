@@ -12,9 +12,6 @@
         <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><a href="/">Home</a></li>
-                    <li><a href="{{url_for('main.interview_pitches')}}">Business</a></li>
-                    <li><a href="{{url_for('main.product_pitches')}}">Technology</a></li>
-                    <li><a href="{{url_for('main.promotion_pitches')}}">Inspirational</a></li>
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">
@@ -29,6 +26,7 @@
                     </li>
                     {% else %}
                     <li><a href="{{url_for('auth.login')}}">Login</a></li>
+                    <li><a href="{{url_for('auth.register')}}">Sign Up</a></li>
                 </ul>
                 {%endif%}
             </div>
