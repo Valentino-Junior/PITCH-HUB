@@ -2,11 +2,10 @@
 {% import 'macros.html' as macro %}
 
 {%block content%}
-<div class="well text-center">
+<div class="well text-center btn-primary" style="color: black; margin: 0px;">
     <h1><b>Business Pitches</b></h1>
 </div>
-<div class="container">
-    <hr>
+<div class="container btn-success" style="padding: 100px; color: black;">
     <div class="row">
         {{macro.displayPitches(pitches)}}
     </div>

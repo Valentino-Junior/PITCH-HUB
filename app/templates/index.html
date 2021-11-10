@@ -4,12 +4,12 @@
 
 {%block styles%}
     {{ super() }}
-    <link rel="stylesheet" href="{{url_for('static',filename='css/index.css')}}">
+    <link rel="stylesheet" href="{{url_for('static',filename='index.css')}}">
 {%endblock%}
 <!-- Content block -->
 {%block content%}
-
-<div class="container" style="padding-top: 60px; text-align: center; padding-bottom: 60px;">
+<div id="home" style="padding-top: 50px; padding-bottom: 90px;">
+<div  class="container" style="padding-top: 40px; text-align: center; padding-bottom: 60px;">
     <a href="{{url_for('main.new_pitch')}}" class="btn btn-warning">Create Pitch</a>
 </div>
 
@@ -37,5 +37,6 @@
             </div>
         </div>
     </div>
+</div>
 </div>
 {%endblock%}

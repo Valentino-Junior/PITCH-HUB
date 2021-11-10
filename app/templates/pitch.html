@@ -8,7 +8,7 @@
 {%endblock%}
 <!-- Content block -->
 {%block content%}
-<div class="container text-center">
+<div class="container text-center btn-primary" style="color: black;">
     <div class="row">
         <h3>{{pitch.pitch_title}}</h3>
         <hr>
@@ -16,9 +16,9 @@
         <span>
         <p>Posted on {{date}} by {{pitch.user.username| capitalize}}</p>
         <a href="/pitch/{{pitch.id}}?like=1">
-            <i class="far fa-thumbs-up"></i>
+            <i class="far fa-thumbs-up" style="color:green"></i>
         </a>{{pitch.likes}} <a href="/pitch/{{pitch.id}}?dislike=1">
-            <i class="far fa-thumbs-down"></i>
+            <i class="far fa-thumbs-down" style="color:red"></i>
         </a>{{pitch.dislikes}}</span>
 
     </div>
