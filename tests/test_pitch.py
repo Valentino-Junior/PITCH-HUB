@@ -14,7 +14,7 @@ class PitchModelTest(unittest.TestCase):
     def test_check_instance_variables(self):
         self.assertEquals(self.new_pitch.pitch_title,'Test')
         self.assertEquals(self.new_pitch.pitch_content,'Test pitch demonez')
-        self.assertEquals(self.new_pitch.category,"promotion")
+        self.assertEquals(self.new_pitch.category,"technology")
         self.assertEquals(self.new_pitch.user,self.user_savian)
 
     def test_save_pitch(self):
