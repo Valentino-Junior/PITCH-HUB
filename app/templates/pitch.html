@@ -8,6 +8,7 @@
 {%endblock%}
 <!-- Content block -->
 {%block content%}
+<div class="container text-center">
     <div class="row">
         <h3>{{pitch.pitch_title}}</h3>
         <hr>
@@ -22,7 +23,7 @@
 
     </div>
     <div class="row">
-        <h4>Comments</h4>
+        <h4><b>Comments</b></h4>
         <hr>
         {% if current_user.is_authenticated %}
             {{ wtf.quick_form(comment_form) }}
@@ -31,4 +32,5 @@
     </div>
 
 </div>
+
 {%endblock%}
