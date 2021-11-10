@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_bootstrap import Bootstrap
+from flask_login.utils import _secret_key
 from config import config_options
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
@@ -23,6 +24,12 @@ def create_app(config_name):
 
     # Creating the app configurations
     app.config.from_object(config_options[config_name])
+
+
+     #configuring a screat key
+    app.config['SECRET_KEY'] = 'keto'
+
+
 
     # Initializing flask extensions
     bootstrap.init_app(app)
