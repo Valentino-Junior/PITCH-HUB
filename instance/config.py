@@ -1,1 +1,1 @@
-SECRET_KEY='R60Zt478JoidobiyZQjZDA'
+SECRET_KEY='keton'

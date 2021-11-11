@@ -27,7 +27,7 @@ def create_app(config_name):
 
 
      #configuring a screat key
-    app.config['SECRET_KEY'] = 'R60Zt478JoidobiyZQjZDA'
+    app.config['SECRET_KEY'] = 'keton'
 
 
 
