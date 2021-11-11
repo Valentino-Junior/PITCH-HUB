@@ -56,7 +56,7 @@
 
 import os
 class Config:
-    SECRET_KEY = os.environ.get('SECRET_KEY')
+    SECRET_KEY ='R60Zt478JoidobiyZQjZDA'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     UPLOADED_PHOTOS_DEST = 'app/static/photos'
     #  email configurations
